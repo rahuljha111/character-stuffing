@@ -1,0 +1,50 @@
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
+void charc() {
+    char input[50], stuffed[100], unstuffed[50];
+    const char *flag = "dlestx", *esc = "dle";
+    int len, si = 6, ui = 0;
+
+    printf("Enter number of characters: ");
+    scanf("%d", &len);
+    getchar();
+    printf("Enter characters: ");
+    for (int i = 0; i < len; i++) input[i] = getchar();
+    input[len] = '\0';
+
+    printf("\nOriginal: %s\n", input);
+    strcpy(stuffed, flag);
+
+    for (int i = 0; i < len; i++) {
+        if (strncmp(&input[i], esc, 3) == 0) {
+            strcpy(&stuffed[si], esc);
+            si += 3;
+        }
+        stuffed[si++] = input[i];
+    }
+
+    strcpy(&stuffed[si], "dleetx");
+    printf("\nTransmitted: %s\n", stuffed);
+
+    for (int i = 6; i < si; i++) {
+        if (strncmp(&stuffed[i], esc, 3) == 0) i += 2;
+        else unstuffed[ui++] = stuffed[i];
+    }
+
+    unstuffed[ui] = '\0';
+    printf("\nReceived: %s\n", unstuffed);
+}
+
+int main() {
+    int choice;
+    while (1) {
+        printf("\n1. Character Stuffing\n2. Exit\nChoice: ");
+        scanf("%d", &choice);
+        if (choice == 1) charc();
+        else if (choice == 2) break;
+        else printf("Invalid option.\n");
+    }
+    return 0;
+}
